@@ -30,7 +30,7 @@ public class NumberFormatter
 	 * @param d: the number to convert
 	 * @return the rounded number
 	 */
-	public static String formatPValue(double d)
+	public static String formatScore(double d)
 	{
 		if(d == 0.0)
 			return "<1E-323";
