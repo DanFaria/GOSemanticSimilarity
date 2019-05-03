@@ -91,7 +91,7 @@ public class GeneOntology
 	/**
 	 * Constructs an empty ontology
 	 */
-	public GeneOntology()
+	private GeneOntology()
 	{
 		//Initialize the data structures
 		uriClasses = new HashSet<String>();
@@ -122,6 +122,7 @@ public class GeneOntology
 	/**
 	 * Constructs; an Ontology from file 
 	 * @param path: the path to the input Ontology file
+	 * @param annotFile: gene product annotation file
 	 * @throws OWLOntologyCreationException 
 	 */
 	public GeneOntology(String path, String annotFile, boolean useAllRelations) throws OWLOntologyCreationException, IOException
@@ -132,6 +133,7 @@ public class GeneOntology
 	/**
 	 * Constructs an Ontology from an URI  
 	 * @param uri: the URI of the input Ontology
+	 * @param annotFile: gene product annotation file
 	 * @throws OWLOntologyCreationException 
 	 */
 	public GeneOntology(URI uri, String annotFile, boolean useAllRelations) throws OWLOntologyCreationException, IOException
@@ -162,6 +164,16 @@ public class GeneOntology
     	
 	
 //Public Methods
+	
+	/**
+	 * @param gene: identifier of the gene product
+	 * @return whether the gene product is listed in the annotation or synonym
+	 * tables
+	 */
+	public boolean contains(String gene)
+	{
+		return geneTerms.contains(gene) || geneSynonyms.containsKey(gene);
+	}
 	
 	/**
 	 * @param name: the local name of the class in the ontology
@@ -366,9 +378,6 @@ public class GeneOntology
 		return commonTerms;
 	}
 	
-	
-	
-	
 	/**
 	 * @param uri: the id of the class to search in the map
 	 * @return the list of descendants of the input class
@@ -452,7 +461,6 @@ public class GeneOntology
 				distance = r.getDistance();
 		return distance;
 	}
-	
 	
 	
 	/**
@@ -548,11 +556,8 @@ public class GeneOntology
 				mica = a;
 			}
 		}
-
 		return mica;
-
 	}
-
 	
 	/**
 	 * @param gene: the identifier of the gene product 
@@ -580,9 +585,7 @@ public class GeneOntology
 				}
 			}
 		}
-		
 		return new HashSet<String>(termVector);
-
 	}
 	
 	/**
@@ -685,8 +688,6 @@ public class GeneOntology
 	{
 		return termTypes.get(uri);
 	}
-	
-	
 	/**
 	 * @param name: the local name of the input Ontology class
 	 * @return the uri of the class with the given local name
@@ -695,8 +696,6 @@ public class GeneOntology
 	{
 		return nameClasses.get(name);
 	}
-	
-
 	
 	/**
 	 * @param child: the id of the child class to search in the map
