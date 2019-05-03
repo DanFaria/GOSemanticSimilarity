@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import main.Main;
 
-public class PeekarStaab implements TermSimilarityMetric 
+public class PekarStaab implements TermSimilarityMetric 
 {
 	
 	public double getTermSimilarity(String term1, String term2) 
