@@ -83,7 +83,10 @@ public class GeneOntology
 	private HashMap<String,String> geneSynonyms;
 	
 	private boolean useAllRelations;
+	private boolean structural;
 	
+	//The map of uri -> IC in the ontology
+	private HashMap<String,Double> termICs;
 	
 
 //Constructors
@@ -111,6 +114,7 @@ public class GeneOntology
         geneTerms = new Table2Set<String,String>();
 		termGenes = new Table2Set<String,String>();
 		geneSynonyms = new HashMap<String,String>();
+		termICs = new HashMap<String,Double>();
 		
         //Increase the entity expansion limit to allow large ontologies
         System.setProperty(LIMIT, "1000000");
@@ -125,9 +129,9 @@ public class GeneOntology
 	 * @param annotFile: gene product annotation file
 	 * @throws OWLOntologyCreationException 
 	 */
-	public GeneOntology(String path, String annotFile, boolean useAllRelations) throws OWLOntologyCreationException, IOException
+	public GeneOntology(String path, String annotFile, boolean useAllRelations, boolean structural) throws OWLOntologyCreationException, IOException
 	{
-        this((new File(path)).toURI(), annotFile, useAllRelations);
+        this((new File(path)).toURI(), annotFile, useAllRelations, structural);
 	}
 	
 	/**
@@ -136,7 +140,7 @@ public class GeneOntology
 	 * @param annotFile: gene product annotation file
 	 * @throws OWLOntologyCreationException 
 	 */
-	public GeneOntology(URI uri, String annotFile, boolean useAllRelations) throws OWLOntologyCreationException, IOException
+	public GeneOntology(URI uri, String annotFile, boolean useAllRelations, boolean structural) throws OWLOntologyCreationException, IOException
 	{
 		this();
         OWLOntology o;
@@ -156,16 +160,16 @@ public class GeneOntology
         manager.removeOntology(o);
         //Reset the entity expansion limit
         System.clearProperty(LIMIT);
-     
+        this.useAllRelations = useAllRelations;
+        this.structural = structural;
 		readAnnotationFile(annotFile);
 		extendAnnotations();
-    		
     }
     	
 	
 //Public Methods
 	
-	/**
+	/**true
 	 * @param gene: identifier of the gene product
 	 * @return whether the gene product is listed in the annotation or synonym
 	 * tables
@@ -210,7 +214,6 @@ public class GeneOntology
 		return false;
 	}
 	
-	
 	public int countAnnotations(String go)
 	{
 		if(termGenes.contains(go))
@@ -218,7 +221,6 @@ public class GeneOntology
 		else
 			return 0;
 	}
-	
 
 	/**
 	 * @param uri: the id of the class to search in the map
@@ -485,30 +487,39 @@ public class GeneOntology
 	 * @param uri: the id of the class to search in the map
 	 * @return the information content of the given uri
 	 */
-	public double getInfoContent(String uri, boolean structural)
+	public double getInfoContent(String uri)
 	{
+		if(termICs.containsKey(uri))
+			return termICs.get(uri);
+		double score = 0.0;
+		String root = rootTerms.get(getType(uri));
+		if(root.equals(uri))
+		{
+			termICs.put(uri, score);
+			return score;
+		}
+		
 		if(structural)
 		{
 			if (useAllRelations)
-			{
-				return 1-Math.log(1+getDescendants(uri).size())/
-						Math.log(1+getDescendants(rootTerms.get(getType(uri))).size());
+			{	
+				score = 1-Math.log(1+getDescendants(uri).size())/
+						Math.log(1+getDescendants(root).size());
 			}
 			else
 			{
-				return 1-Math.log(1+getSubClasses(uri,false).size())/
+				score = 1-Math.log(1+getSubClasses(uri,false).size())/
 						Math.log(1+getSubClasses(rootTerms.get(getType(uri)),false).size());
 			}		
 			
 		}
-		
 		else
 		{
-			return 1-Math.log(Math.max(1, termGenes.get(uri).size()))/
+			score = 1-Math.log(Math.max(1, termGenes.get(uri).size()))/
 					Math.log(Math.max(1, termGenes.get(rootTerms.get(getType(uri))).size()));
-			
 		}
-		
+		termICs.put(uri, score);
+		return score;
 	}
 	
 	
@@ -694,7 +705,12 @@ public class GeneOntology
 	 */
 	public String getURI(String name)
 	{
-		return nameClasses.get(name);
+		if(nameClasses.containsKey(name))
+			return nameClasses.get(name);
+		else if(alternatives.containsKey(name))
+			return nameClasses.get(alternatives.get(name));
+		else
+			return null;
 	}
 	
 	/**
@@ -810,8 +826,13 @@ public class GeneOntology
 			{
 				if(useAllRelations)
 				{
-					for(String ancestor : getAncestors(go))
+					if( go!= null)
+					{
+						for(String ancestor : getAncestors(go))
 						tempAnnotations.add(gene, ancestor);
+					}
+					
+		
 				}
 				else
 				{
@@ -860,13 +881,13 @@ public class GeneOntology
 			boolean dep = false;
 			for(OWLAnnotation a : c.getAnnotations(o))
 			{
-				if(a.getProperty().toString().equals("owl:deprecated")  && ((OWLLiteral)a.getValue()).parseBoolean())
+				if((a.getProperty().toString().equals("owl:deprecated") || a.getProperty().toString().equals("owl:is_obsolete")) && ((OWLLiteral)a.getValue()).parseBoolean())
 				{
 					dep = true;
 					break;
 				}
 			}
-			//If it is, record it and skip it
+			//If it is deprecated, record it and skip it
 			if(dep)
 			{
 				deprecated.add(getLocalName(classUri).replace('_', ':'));
@@ -877,10 +898,12 @@ public class GeneOntology
 			
 			//Get the local name from the URI
 			String name = getLocalName(classUri).replace('_', ':');
+			
 			classNames.put(classUri,name);
 			nameClasses.put(name,classUri);
+		
 			
-			//Now get the class's label and type
+			//Now get the class' label and type
 			Set<OWLAnnotation> annots = c.getAnnotations(o);
 			for(OWLOntology ont : o.getImports())
 				annots.addAll(c.getAnnotations(ont));
@@ -1101,9 +1124,14 @@ public class GeneOntology
 			line = in.readLine();
 			if(!containsName(go))
 				continue;
+			
 			String uri = getURI(go);
-			geneTerms.add(gene,uri);
-			termGenes.add(uri, gene);
+			if(uri != null)
+			{
+				geneTerms.add(gene,uri);
+				termGenes.add(uri, gene);
+			}
+			
 			if(geneSyn != null)
 				geneSynonyms.put(geneSyn, gene);
 		}
