@@ -6,13 +6,6 @@ import main.Main;
 
 public class SimGIC implements TermSimilarityMetric, GeneSimilarityMetric 
 {
-	private boolean structural;
-
-	public SimGIC (boolean structural)
-	{
-		this.structural = structural;
-	}
-
 	public double getTermSimilarity(String term1, String term2)
 	{
 		if(term1.equals(term2))
@@ -23,12 +16,12 @@ public class SimGIC implements TermSimilarityMetric, GeneSimilarityMetric
 			double unionIC = 0;
 			
 			for (String i: Main.getGO().getCommonAncestors(term1,term2))
-				intersectIC += Main.getGO().getInfoContent(i, structural);
+				intersectIC += Main.getGO().getInfoContent(i);
 		
 			for (String i: Main.getGO().getCombinedAncestors(term1,term2))
-				unionIC += Main.getGO().getInfoContent(i, structural);
+				unionIC += Main.getGO().getInfoContent(i);
 			
-			return intersectIC / unionIC;
+			return intersectIC*1.0 / unionIC;
 		}
 	}
 
@@ -40,29 +33,28 @@ public class SimGIC implements TermSimilarityMetric, GeneSimilarityMetric
 		else
 		{
 			Set<String> set2 = Main.getGO().geneTerms.get(gene2);
+			double intersection = 0.0;
+			double union = 0.0;
 			
-			double intersection = 0;
-			double union = 0;
-
+			//computes intersection IC
 			for (String i: Main.getGO().geneTerms.get(gene1))
-			{
-				double IC = Main.getGO().getInfoContent(i, structural);
+			{	
+				double IC = Main.getGO().getInfoContent(i);
 				
 				if(set2.contains(i))
 					intersection += IC;
 			
 				else
-					union += IC;
+					union += IC;		
 			}
-
+			if(intersection == 0.0)
+				return 0.0;
+			//computes union IC
 			for (String i: set2)
 			{
-				union += Main.getGO().getInfoContent(i, structural);
+				union += Main.getGO().getInfoContent(i);
 			}
-			
 			return intersection / union;
 		}
-	}
-	
-	
+	}	
 }

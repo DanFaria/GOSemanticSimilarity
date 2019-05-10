@@ -6,7 +6,7 @@ public class Maximum implements GeneSimilarityMetric
 {
 	private TermSimilarityMetric measure;
 	
-	public Maximum(boolean structural, TermSimilarityMetric measure)
+	public Maximum(TermSimilarityMetric measure)
 	{
 		this.measure = measure;
 	}
