@@ -14,7 +14,6 @@ import java.util.Vector;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
-import metrics.TermSimilarityMetric;
 import metrics.BestMatchAverage;
 import metrics.CoSim;
 import metrics.GeneMeasure;
@@ -27,9 +26,9 @@ import metrics.Resnik;
 import metrics.SimGIC;
 import metrics.SimUI;
 import metrics.TermMeasure;
+import metrics.TermSimilarityMetric;
 import ontology.GeneOntology;
 import util.NumberFormatter;
-import util.Table2Set;
 
 
 public class Main 
@@ -39,8 +38,8 @@ public class Main
 	private static String goFile = null;
 	private static String annotFile = null;
 	private static String studyFile = null;
-	private static boolean useAllRelations;
-	private static boolean structural;
+	private static boolean useAllRelations = false;
+	private static boolean structural = false;
 	
 	//Logging:
 	//- Output stream 
@@ -56,14 +55,15 @@ public class Main
 	//- The term similarity measure
 	private static TermSimilarityMetric termMetric;
 	//- The term enum similarity measure
-	private static TermMeasure termMeasure;
+	private static TermMeasure termMeasure = null;
 	//- The gene similarity measure
 	private static GeneSimilarityMetric geneMetric;
 	//- The gene enum similarity measure
-	private static GeneMeasure geneMeasure;
+	private static GeneMeasure geneMeasure = GeneMeasure.SIM_GIC;
 	//Results
-	private static Table2Set<Double, HashSet<String>> results = null;
-
+	private static Vector<String> gene1 = new Vector<String>();
+	private static Vector<String> gene2 = new Vector<String>();
+	private static Vector<Double> score = new Vector<Double>();
 
 	public static void main(String[] args) 
 	{
@@ -81,27 +81,27 @@ public class Main
 		openOntology();
 		openGeneSet();
 		computeSimilarity();
-		saveResult(0, "similarity_result");
+		saveResult(0, "SimGIC_results");
 		exit();
 	}
 	
 	private static void computeSimilarity()
 	{
 		Vector<String> studyVector = new Vector<String>(studySet);
-		HashSet<String> tempGeneSet = new HashSet<String>();
-
+		
 		for(int i=0; i<studyVector.size()-1; i++)
 		{
+			String g1= studyVector.get(i);
 			for(int j=i+1; j<studyVector.size()-1; j++)
 			{
-				String gene1= studyVector.get(i);
-				String gene2= studyVector.get(j);
-				tempGeneSet.add(gene1);
-				tempGeneSet.add(gene2);
-				results.add(geneMetric.getGeneSimilarity(gene1, gene2), tempGeneSet);
-				tempGeneSet.clear();
+				String g2= studyVector.get(j);
+				gene1.add(g1);
+				gene2.add(g2);
+				score.add(geneMetric.getGeneSimilarity(g1, g2));
+				//System.out.println("score=" + score);
 			}
 		}
+		return;
 	}
 
 	private static void exit()
@@ -151,7 +151,7 @@ public class Main
 		try
 		{
 			System.out.println(df.format(new Date()) + " - Reading Gene Ontology and annotations");
-			go = new GeneOntology(goFile, annotFile, useAllRelations);
+			go = new GeneOntology(goFile, annotFile, useAllRelations, structural);
 			System.out.println(df.format(new Date()) + " - Finished");
 		}
 		
@@ -230,13 +230,13 @@ public class Main
 			return;
 			
 		if (termMeasure.equals(TermMeasure.RESNIK))
-			termMetric = new Resnik(structural);
+			termMetric = new Resnik();
 			
 		else if (termMeasure.equals(TermMeasure.LIN))
-			termMetric = new Lin(structural);
+			termMetric = new Lin();
 			
 		else if (termMeasure.equals(TermMeasure.JIANG_CONRATH))
-			termMetric = new JiangConrath(structural);
+			termMetric = new JiangConrath();
 	
 		else if (termMeasure.equals(TermMeasure.PEKAR_STAAB))
 			termMetric = new PekarStaab();		
@@ -251,13 +251,13 @@ public class Main
 			geneMetric = new SimUI();
 		
 		else if (geneMeasure.equals(GeneMeasure.SIM_GIC))
-			geneMetric = new SimGIC(structural);
+			geneMetric = new SimGIC();
 		
 		else if (geneMeasure.equals(GeneMeasure.COSIM))
-			geneMetric = new CoSim(structural);
+			geneMetric = new CoSim();
 		
 		else if (geneMeasure.equals(GeneMeasure.MAXIMUM))
-			geneMetric = new Maximum(structural, termMetric);
+			geneMetric = new Maximum(termMetric);
 		
 		else if (geneMeasure.equals(GeneMeasure.BEST_MATCH_AVERAGE))
 			geneMetric = new BestMatchAverage(termMetric);
@@ -271,7 +271,7 @@ public class Main
 			if((args[i].equalsIgnoreCase("-l") || args[i].equalsIgnoreCase("--log")) &&
 					i < args.length-1)
 			{
-				logFile = args[++i];
+				logFile = args[++i]; 
 			}
 			else if((args[i].equalsIgnoreCase("-g") || args[i].equalsIgnoreCase("--go")) &&
 					i < args.length-1)
@@ -320,13 +320,14 @@ public class Main
 			PrintWriter out = new PrintWriter(new FileWriter(file));
 
 			//First write the header
-			out.print("Gene1/Gene2/Similarity");
+			out.println("Gene 1\tGene 2\tSimilarity");
 
 			//Then write the term information (in descending similarity score order)
-			for(Double score : results.keySet())
+			for(int i=0; i<gene1.size(); i++)
 			{
-				out.print(results.get(score) + "\t");
-				out.print(NumberFormatter.formatScore(score) + "\t");
+				out.print(gene1.elementAt(i)+ "\t");
+				out.print(gene2.elementAt(i)+ "\t");
+				out.println(NumberFormatter.formatScore(score.elementAt(i)));
 			}
 			out.close();
 			System.out.println(df.format(new Date()) + " - Finished");
