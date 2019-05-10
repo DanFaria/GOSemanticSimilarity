@@ -33,7 +33,7 @@ public class NumberFormatter
 	public static String formatScore(double d)
 	{
 		if(d == 0.0)
-			return "<1E-323";
+			return "" + 0;
 		double f = 1000;
 		if(d > 0.001)
 		{
