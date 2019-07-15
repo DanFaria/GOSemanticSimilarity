@@ -6,7 +6,7 @@ public enum GeneMeasure
 	SIM_GIC ("simGIC"),
 	COSIM ("CoSim"),
 	MAXIMUM ("Maximum"),
-	BEST_MATCH_AVERAGE ("Best match average");
+	BEST_MATCH_AVERAGE ("BestMatchAverage");
 	
 	private String label;
 
@@ -21,7 +21,7 @@ public enum GeneMeasure
 	{
 		for(GeneMeasure m : GeneMeasure.values())
 		{
-			if(s.equals(m.label))
+			if(s.equalsIgnoreCase(m.label))
 			return m;	
 		}
 		
