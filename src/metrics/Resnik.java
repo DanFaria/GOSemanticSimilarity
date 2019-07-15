@@ -8,7 +8,7 @@ public class Resnik implements TermSimilarityMetric
 	{
 		if(term1.equals(term2))
 			return 1.0;
-		else 
+		else
 			return Main.getGO().getInfoContent(Main.getGO().getMICA(term1,term2));
 	}
 	
