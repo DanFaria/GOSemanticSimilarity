@@ -13,17 +13,21 @@ public class PekarStaab implements TermSimilarityMetric
 			return 1.0;
 		
 		String root1 = Main.getGO().getRoot(Main.getGO().getType(term1));
-		String root2 = Main.getGO().getRoot(Main.getGO().getType(term1));
+		String root2 = Main.getGO().getRoot(Main.getGO().getType(term2));
+		
 		boolean useAllRelations = Main.useAllRelations();
 		
 		if(!useAllRelations && !root1.equals(root2))
 			return 0.0;		
 		
 		String lowestCommonAncestor = null;
-		int lowestDistance = 0;
+		int lowestDistance = 100000;
 		
 		HashSet<String> commonAncestors = Main.getGO().getCommonAncestors(term1,term2);
 		
+		if (commonAncestors.isEmpty())
+			return 0.0;
+	
 		if(commonAncestors.contains(term1))
 		{
 			lowestDistance = Main.getGO().getMaxDistance(term2, term1);
@@ -38,16 +42,16 @@ public class PekarStaab implements TermSimilarityMetric
 		{
 			for(String i: commonAncestors)
 			{
-
 				int distance = Main.getGO().getMaxDistance(term1,i) + Main.getGO().getMaxDistance(term2,i);
 
-				if (lowestDistance < distance)
+				if (lowestDistance > distance)
 				{
 					lowestDistance = distance;
 					lowestCommonAncestor = i;
 				}
 			}
 		}
+		
 		String root = Main.getGO().getRoot(Main.getGO().getType(lowestCommonAncestor));
 		int rootDistance = Main.getGO().getMaxDistance(lowestCommonAncestor, root);
 		if(useAllRelations)
