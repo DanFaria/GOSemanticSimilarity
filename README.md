@@ -59,3 +59,5 @@ The options are:
 "-tsm, --term_metric" => Metric used to analyse semantic similarity between ontology terms [Mandatory when using Best Match Average gene metric only]
 
 "-h,--help" => Display command line usage instructions
+
+![biodata_elixir](https://user-images.githubusercontent.com/43668147/61229177-9d83dc00-a71f-11e9-89a7-43deae036411.png)
