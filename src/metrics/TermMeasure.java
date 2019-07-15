@@ -4,8 +4,11 @@ public enum TermMeasure
 {
 	RESNIK ("Resnik"),
 	LIN ("Lin"),
-	JIANG_CONRATH("Jiang Conrath"),
-	PEKAR_STAAB ("Pekar Staab");
+	JIANG_CONRATH("JiangConrath"),
+	COSIM ("CoSim"),
+	SIMUI ("SimUI"),
+	SIMGIC ("SimGIC"),
+	PEKAR_STAAB ("PekarStaab");
 	
 	private String label;
 
@@ -20,7 +23,7 @@ public enum TermMeasure
 	{
 		for(TermMeasure m : TermMeasure.values())
 		{
-			if(s.equals(m.label))
+			if(s.equalsIgnoreCase(m.label))
 			return m;	
 		}
 		
