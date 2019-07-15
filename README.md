@@ -2,7 +2,7 @@
 
 GOSemanticSimilarity is a tool for performing semantic similarity analysis, based on Gene Ontology annotations, of a set of gene products or two sets of gene products.
 
-## It requires as input:
+### It requires as input:
 
     1. A Gene Ontology file in either OBO or OWL, and either the full GO or a GOSlim
 
@@ -16,7 +16,7 @@ GOSemanticSimilarity is a tool for performing semantic similarity analysis, base
 
     6. Optionally, the GO type (sub-ontology) to use, which can be Molecular Function, Biological Process or Cellular Component.
 
-## It produces as output, depending on the mode:
+### It produces as output, depending on the mode:
 
     - All vs all: A tabular Result file listing the semantic similarity between all of the genes and a graph PNG heat map.
     
@@ -24,9 +24,9 @@ GOSemanticSimilarity is a tool for performing semantic similarity analysis, base
     
     - Set vs set: A Result File containing the similarity score obtained for the two sets and a list of relevant common GO terms. 
 
-## The XML file is setup for the Galaxy platform
+### The XML file is setup for the Galaxy platform
 
-## Command Line Usage
+### Command Line Usage
 
 To run the GSS.jar file from the command line, you need to have Java installed in your computer. You can run it by typing:
 
