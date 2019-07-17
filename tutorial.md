@@ -79,10 +79,10 @@ The data for this tutorial is available at [Zenodo](link!!!!!!!!!!!) to download
 2. If you press the {% icon solution %} icon of brain.txt it should see a list of overexpressed gene ids in the brain. The annot.txt file is just a tabular file associating the genes in the population set to GO terms.
 
 3. GOSemanticSimilarity {% icon tool %} tool with the following parameters:
-    {% icon param-file %} “Gene Ontology File”: go.obo
-    {% icon param-file %} “Gene Product Annotation File”: annot.txt
-    {% icon param-file %} “Study set File”: brain.txt
-    Use the default options for the rest. 
+   - {% icon param-file %} “Gene Ontology File”: go.obo
+   - {% icon param-file %} “Gene Product Annotation File”: annot.txt
+   - {% icon param-file %} “Study set File”: brain.txt
+   - Use the default options for the rest. 
 
 ## Interpretation of the results 
 Semantic similarity analysis, and in particular, this tool, has many applications as clustering genes according to their molecular function, biological processes in which they are involved, and the cellular component in which they perform a function.
@@ -90,4 +90,6 @@ Semantic similarity analysis, and in particular, this tool, has many application
 It is also useful to find genes related to a given gene of interest, according to their functional clustering.
 
 Moreover, it allows us to correlate functional similarity with another feature of interest (e.g., sequence similarity, interactions, diseases).
+
+
 
