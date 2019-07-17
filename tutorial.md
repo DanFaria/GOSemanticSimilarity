@@ -1,13 +1,16 @@
 --
-layout: GOSemanticSimilarity
+layout: tutorial_hands_on
 
 title: GO Semantic Similarity Analysis
+level: Introductory
 zenodo_link: ''
+
 questions:
-- Which biological questions are addressed by the tutorial?
-- Which bioinformatics techniques are important to know for this type of data?
+- How can I compare gene products at the functional level?
+- How can I obtain the inputs necessary for semantic similarity analysis?
+
 objectives:
-- How to perform a GO Semantic Similarity Analysis
+- How to perform a GO Semantic Similarity Analysis using three different modes
 - How to interpret and simplify the results
 
 time_estimation: ''
@@ -29,8 +32,7 @@ This tool is able to assess the closeness between two terms by making use of Gen
 ####  What is the Gene Ontology?  
 The [Gene Ontology](http://www.geneontology.org/) (GO) is a structured, controlled vocabulary for the classification of gene function at the molecular and cellular level. It is divided in three separate sub-ontologies or GO types: biological process (e.g., signal transduction), molecular function (e.g., ATPase activity) and cellular component (e.g., ribosome). These sub-ontologies are structured as directed acyclic graphs (a hierarchy with multi-parenting) of GO terms.
 
-<img width="400" alt="hexose-biosynthetic-process" src="https://user-images.githubusercontent.com/43668147/61297834-fbbec680-a7d4-11e9-8a22-cda55c686fa5.png">
-Figure 1 - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/
+![hexose-biosynthetic-process](https://user-images.githubusercontent.com/43668147/61297834-fbbec680-a7d4-11e9-8a22-cda55c686fa5.png "Figure 1 - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/")
 
 ## Semantic Similarity Analysis
 To perform functional enrichment analysis, we need to have:
