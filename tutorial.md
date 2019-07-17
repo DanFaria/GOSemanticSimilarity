@@ -25,7 +25,7 @@ contributors:
 
 ## Introduction
 Semantic similarity is a method to compare genes or gene products at the functional level. 
-We are able to quantify the similarity between those genes thanks to the semantic similarity measures, a function that returns an numerical score of similarity between two genes. These metrics have already been described in the literature.
+We are able to quantify the similarity between those genes thanks to the semantic similarity measures, a function that returns an numerical score of similarity between two genes.
 
 This tool is able to assess the closeness between two terms by making use of Gene Ontology annotations. Thus, if two gene products are annotated within the same schema, we can compare them by comparing the terms with which they are annotated.
 
@@ -34,12 +34,32 @@ The [Gene Ontology](http://www.geneontology.org/) (GO) is a structured, controll
 
 ![hexose-biosynthetic-process](https://user-images.githubusercontent.com/43668147/61297834-fbbec680-a7d4-11e9-8a22-cda55c686fa5.png "Figure 1 - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/")
 
+### Agenda
+{:.no_toc}
+In this tutorial we will deal with:
+{:toc}
+{: .agenda}
+
 ## Semantic Similarity Analysis
 To perform functional enrichment analysis, we need to have:
--   A set of genes of interest (e.g., differentially expressed genes): **study set**
--   **GO annotations**, associating the genes in the population set to GO terms
--   The **GO ontology**, with the description of GO terms and their relationships
+- A set of genes of interest (e.g., differentially expressed genes): **study set**
+- **GO annotations**, associating the genes in the population set to GO terms
+- The **GO ontology**, with the description of GO terms and their relationships
 
+We also need to decide:
+- The semantic similarity measure to apply for similarity analysis.
+- The analysis mode: comparing all vs all, specific pairs of genes or set vs set.
 
+#### Semantic similarity metrics
+This tool implements most metrics that have been described in the [literature.](https://doi.org/10.1371/journal.pcbi.1000443)
+The options available are:
+![image](https://user-images.githubusercontent.com/43668147/61377275-cd0b2380-a89a-11e9-87ad-cf97fbf63d5e.png)
+All term based metrics use pairwise metric Best Match Average as a combinatory strategy to compare at the gene level.
 
+## Interpretation of the results 
+Semantic similarity analysis, and in particular, this tool, has many applications as clustering genes according to their molecular function, biological processes in which they are involved, and the cellular component in which they perform a function.
+
+It is also useful to find genes related to a given gene of interest, according to their functional clustering.
+
+Moreover, it allows us to correlate functional similarity with another feature of interest (e.g., sequence similarity, interactions, diseases).
 
