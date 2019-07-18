@@ -15,8 +15,9 @@ objectives:
 
 time_estimation: ''
 key_points:
-- The take-home messages
-- They will appear at the end of the tutorial
+- "The GOSemanticSimilarity tool can be used to perform GO Semantic Similarity analysis" 
+- "We can use Semantic Similarity analysis to cluster genes according to their molecular function, biological processes in which they are involved, and the cellular component in which they perform a function."
+- "
 
 contributors:
 - Daniel Faria
@@ -162,7 +163,7 @@ To further discuss the similarity between the tissues, the *set vs set* mode is 
 >
 > 4. Press **Execute**
 >
-> 5. Repeat steps 3. and 4., but this time comparing muscle.txt - brain.txt and heart.txt - brain.txt.
+> 5. Repeat steps 3. and 4., but this time comparing *muscle.txt - brain.txt* and *heart.txt - brain.txt*.
 >
 > 6. Open the **results.txt** files.
 >
