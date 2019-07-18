@@ -3,7 +3,7 @@ layout: tutorial_hands_on
 
 title: GO Semantic Similarity Analysis
 level: Introductory
-zenodo_link: ''
+zenodo_link: 'https://zenodo.org/record/3339362#.XTBT5_x7nCI'
 
 questions:
 - How can I compare gene products at the functional level?
@@ -17,7 +17,6 @@ time_estimation: ''
 key_points:
 - "The GOSemanticSimilarity tool can be used to perform GO Semantic Similarity analysis" 
 - "We can use Semantic Similarity analysis to cluster genes according to their molecular function, biological processes in which they are involved, and the cellular component in which they perform a function."
-- "
 
 contributors:
 - Daniel Faria
@@ -39,6 +38,10 @@ The [Gene Ontology](http://www.geneontology.org/) (GO) is a structured, controll
 
 **Figure 1** - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/
 
+#### What are GO annotations?
+Genes are associated to GO terms via GO annotations. Each gene can have multiple annotations, even of the same GO type. An important notion to take into account when using GO is that, according to the **true path rule**, a gene annotated to a term is also implicitly annotated to each ancestor of that term in the GO graph. GO annotations have evidence codes that encode the type of evidence supporting them: only a small minority of genes have experimentally verified  annotations; the large majority have annotations inferred electronically based on sequence homology or known patterns.
+
+GO annotations can be obtained from the [Gene Ontology website](http://geneontology.org/page/download-go-annotations), or from species-specific databases. One useful resource to obtain GO annotations is [Ensembl biomart](http://www.ensembl.org/biomart/martview). Again, take note to when and from where you obtained your annotations. For example, if you obtained your data from Ensembl, record the release you used.
 
 > ### Agenda
 >
@@ -60,7 +63,10 @@ We also need to decide:
 #### Semantic similarity metrics
 This tool implements most metrics that have been described in the [literature.](https://doi.org/10.1371/journal.pcbi.1000443)
 The options available are:
+
 ![image](https://user-images.githubusercontent.com/43668147/61377275-cd0b2380-a89a-11e9-87ad-cf97fbf63d5e.png)
+**Figure 2** - Metrics available for semantic similarity analysis.
+
 All term based metrics use pairwise metric Best Match Average as a combinatory strategy to compare at the gene level.
 
 For the first example we will perform an all vs all analysis. The study sets were obtained from RNA-seq of poly-A enriched total RNA of brain, heart and skeletal muscle samples from mouse (Source: [Expression Atlas](https://www.ebi.ac.uk/gxa/experiments/E-MTAB-3725/Downloads)).
@@ -68,7 +74,7 @@ For the first example we will perform an all vs all analysis. The study sets wer
 ## All vs all analysis
 > ### {% icon hands_on %} Hands-on: All vs all analysis
 >
-> The data for this tutorial is available at [Zenodo] # (link!!!!!!!!!!!) to download. For convenience and reproducibility of results, we already added the GO ontology and annotations in the Zenodo repository.
+> The data for this tutorial is available at [Zenodo](https://zenodo.org/record/3339362#.XTBT5_x7nCI) to download. For convenience and reproducibility of results, we already added the GO ontology and annotations in the Zenodo repository.
 >
 > 1. **Upload to the Galaxy the following files**:
 > - go.obo
@@ -114,7 +120,7 @@ For the first example we will perform an all vs all analysis. The study sets wer
 You may find it interesting to compare only specific gene pairs, instead of comparing all the genes in the list with themselves. 
 
 > ### {% icon hands_on %} Hands-on: Specific pairs analysis
-> 1. Come back to [Zenodo] # (link!!!!!!!!!!!) and upload the file pairs_set.txt to Galaxy.
+> 1. Come back to [Zenodo](https://zenodo.org/record/3339362#.XTBT5_x7nCI) and upload the file pairs_set.txt to Galaxy.
 >
 > 2. Take a look {% icon solution %} at this file. It is a list of pairs of genes, separated by a comma (or "\t", ";", " ").
 > These genes are overexpressed in different tissues, as the following schema illustrates:
@@ -149,7 +155,7 @@ You may find it interesting to compare only specific gene pairs, instead of comp
 To further discuss the similarity between the tissues, the *set vs set* mode is the most useful, in which we compare sets of overexpressed genes in the different tissues.
 
 > ### {% icon hands_on %} Hands-on: Set vs set
-> 1. Come back to [Zenodo] # (link!!!!!!!!!!!) and upload the files muscle.txt and heart.txt to Galaxy. As the brain.txt file, these are sets of overexpressed genes in the muscle and heart.
+> 1. Come back to [Zenodo](https://zenodo.org/record/3339362#.XTBT5_x7nCI) and upload the files muscle.txt and heart.txt to Galaxy. As the brain.txt file, these are sets of overexpressed genes in the muscle and heart.
 >
 > 2. GOSemanticSimilarity {% icon tool %} tool with the following parameters:
 >   - {% icon param-file %} *“Gene Ontology File”*: go.obo
@@ -186,5 +192,9 @@ It is also useful to find genes related to a given gene of interest, according t
 
 Moreover, it allows us to correlate functional similarity with another feature of interest (e.g., sequence similarity, interactions, diseases).
 
+# Conclusion
+{:.no_toc}
+GOSemanticSimilarity analysis makes use of Gene Ontology annotations to compare genes or gene products at the functional level. 
+The Gene Ontology is a trustworthy knowlegdebase with information on the molecular function, cellular component and biological processes of genes. This tool offers an easy to use platform and visual results for better understanding of your transcriptomics or proteomics output data.
 
 
