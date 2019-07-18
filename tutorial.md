@@ -35,6 +35,7 @@ This tool is able to assess the closeness between two terms by making use of Gen
 The [Gene Ontology](http://www.geneontology.org/) (GO) is a structured, controlled vocabulary for the classification of gene function at the molecular and cellular level. It is divided in three separate sub-ontologies or GO types: biological process (e.g., signal transduction), molecular function (e.g., ATPase activity) and cellular component (e.g., ribosome). These sub-ontologies are structured as directed acyclic graphs (a hierarchy with multi-parenting) of GO terms.
 
 ![hexose-biosynthetic-process](https://user-images.githubusercontent.com/43668147/61297834-fbbec680-a7d4-11e9-8a22-cda55c686fa5.png)
+
 **Figure 1** - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/
 
 
@@ -63,6 +64,7 @@ All term based metrics use pairwise metric Best Match Average as a combinatory s
 
 For the first example we will perform an all vs all analysis. The study sets were obtained from RNA-seq of poly-A enriched total RNA of brain, heart and skeletal muscle samples from mouse (Source: [Expression Atlas](https://www.ebi.ac.uk/gxa/experiments/E-MTAB-3725/Downloads)).
 
+## All vs all analysis
 > ### {% icon hands_on %} Hands-on: All vs all analysis
 >
 > The data for this tutorial is available at [Zenodo] # (link!!!!!!!!!!!) to download. For convenience and reproducibility of results, we already added the GO ontology and annotations in the Zenodo repository.
@@ -88,12 +90,92 @@ For the first example we will perform an all vs all analysis. The study sets wer
 >   - {% icon param-file %} *“Gene Product Annotation File”*: annot.txt
 >   - {% icon param-select %} *"Compare"*: List of genes
 >   - {% icon param-file %} *“Study set File”*: brain.txt
+>   - {% icon param-select %} *"Semantic Similarity Metric"*: SimUI
 >   - {% icon param-select %} *"GO type"*: Molecular function
 >   - Use the default options for the rest. 
 >
-> #(Inserir screenshot....)
+> # (Inserir screenshot....)
+>
+> 4. Press **Execute**
+>
+>    > ### {% icon question %} Questions
+>    >
+>    > What were the results from running GOSemanticSimilarity on mode all vs all?
+>    > <details>
+>    >
+>    > <summary>Click to view answers</summary>
+>    > This will generate 2 files with the respective default names: 'results' and 'HeatChart.png'. 'Results' is a tabular list of pairs of GO terms present in the study set and their respective semantic similarity score. The graph file is a visual representation of the tabular file.
+>    > </details>
+>    {: .question}
+{: .hands_on}
 
+## Specific pairs analysis
+You may find it interesting to compare only specific gene pairs, instead of comparing all the genes in the list with themselves. 
 
+> ### {% icon hands_on %} Hands-on: Specific pairs analysis
+> 1. Come back to [Zenodo] # (link!!!!!!!!!!!) and upload the file pairs_set.txt to Galaxy.
+>
+> 2. Take a look {% icon solution %} at this file. It is a list of pairs of genes, separated by a comma (or "\t", ";", " ").
+> These genes are overexpressed in different tissues, as the following schema illustrates:
+>   > | heart | heart |
+>   > | heart | muscle |
+>   > | heart | brain |
+>   {: .matrix}
+>
+> 3. GOSemanticSimilarity {% icon tool %} tool with the following parameters:
+>   - {% icon param-file %} *“Gene Ontology File”*: go.obo
+>   - {% icon param-file %} *“Gene Product Annotation File”*: annot.txt
+>   - {% icon param-select %} *"Compare"*: List of pairs of genes
+>   - {% icon param-file %} *“Study set File”*: pairs_set.txt
+>   - {% icon param-select %} *"Semantic Similarity Metric"*: SimUI
+>   - {% icon param-select %} *"GO type"*: Molecular function
+>   - Use the default options for the rest. 
+>
+> 4. Press **Execute**
+>
+> ### {% icon question %} Questions
+>    >
+>    > What can we infer from the results of this study set with GOSemanticSimilarity on mode specific pairs?
+>    > <details>
+>    >
+>    > <summary>Click to view answers</summary>
+>    > The functional similarity between genes overexpressed in the same tissue (heart) is the biggest. The similarity between genes overexpressed in the heart and skeletal muscle is bigger than the similarity between genes overexpressed in the heart and brain. This suggests that the heart is functionally more similar to the skeletal muscle than the brain.
+>    > </details>
+>    {: .question}
+{: .hands_on}
+
+## Set vs set analysis
+To further discuss the similarity between the tissues, the *set vs set* mode is the most useful, in which we compare sets of overexpressed genes in the different tissues.
+
+> ### {% icon hands_on %} Hands-on: Set vs set
+> 1. Come back to [Zenodo] # (link!!!!!!!!!!!) and upload the files muscle.txt and heart.txt to Galaxy. As the brain.txt file, these are sets of overexpressed genes in the muscle and heart.
+>
+> 2. GOSemanticSimilarity {% icon tool %} tool with the following parameters:
+>   - {% icon param-file %} *“Gene Ontology File”*: go.obo
+>   - {% icon param-file %} *“Gene Product Annotation File”*: annot.txt
+>   - {% icon param-select %} *"Compare"*: Sets
+>   - {% icon param-file %} *“Study set File 1”*: muscle.txt
+>   - {% icon param-file %} *“Study set File 2”*: heart.txt
+>   - {% icon param-select %} *"Semantic Similarity Metric"*: SimUI
+>   - {% icon param-select %} *"GO type"*: Molecular function
+>   - Use the default options for the rest. 
+>
+> 4. Press **Execute**
+>
+> 5. Repeat steps 3. and 4., but this time comparing muscle.txt - brain.txt and heart.txt - brain.txt.
+>
+> 6. Open the **results.txt** files.
+>
+> ### {% icon question %} Questions
+>    >
+>    > What can we infer from the results of these sets' comparison with GOSemanticSimilarity?
+>    > <details>
+>    >
+>    > <summary>Click to view answers</summary>
+>    > The functional similarity between the muscle and the heart is the biggest, followed by the similarity between the heart and the brain. The muscle and brain are hardly similar.
+>    > </details>
+>    {: .question}
+{: .hands_on}
 
 
 ## Interpretation of the results 
