@@ -14,6 +14,7 @@ objectives:
 - How to interpret and simplify the results
 
 time_estimation: '30 min'
+
 key_points:
 - "The GOSemanticSimilarity tool can be used to perform GO Semantic Similarity analysis" 
 - "We can use Semantic Similarity analysis to cluster genes according to their molecular function, biological processes and cellular components."
