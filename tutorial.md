@@ -24,6 +24,8 @@ contributors:
 ---
 
 ## Introduction
+{:.no_toc}
+
 Semantic similarity is a method to compare genes or gene products at the functional level. 
 We are able to quantify the similarity between those genes thanks to the semantic similarity measures, a function that returns an numerical score of similarity between two genes.
 
@@ -32,12 +34,15 @@ This tool is able to assess the closeness between two terms by making use of Gen
 ####  What is the Gene Ontology?  
 The [Gene Ontology](http://www.geneontology.org/) (GO) is a structured, controlled vocabulary for the classification of gene function at the molecular and cellular level. It is divided in three separate sub-ontologies or GO types: biological process (e.g., signal transduction), molecular function (e.g., ATPase activity) and cellular component (e.g., ribosome). These sub-ontologies are structured as directed acyclic graphs (a hierarchy with multi-parenting) of GO terms.
 
-![hexose-biosynthetic-process](https://user-images.githubusercontent.com/43668147/61297834-fbbec680-a7d4-11e9-8a22-cda55c686fa5.png "Figure 1 - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/")
+![hexose-biosynthetic-process](https://user-images.githubusercontent.com/43668147/61297834-fbbec680-a7d4-11e9-8a22-cda55c686fa5.png)
+**Figure 1** - Gene Ontology representation. Source: http://geneontology.org/docs/ontology-documentation/
 
-### Agenda
-{:.no_toc}
-In this tutorial we will deal with:
-{:toc}
+
+> ### Agenda
+>
+> In this tutorial we will deal with:
+> {:toc}
+>
 {: .agenda}
 
 ## Semantic Similarity Analysis
@@ -58,31 +63,38 @@ All term based metrics use pairwise metric Best Match Average as a combinatory s
 
 For the first example we will perform an all vs all analysis. The study sets were obtained from RNA-seq of poly-A enriched total RNA of brain, heart and skeletal muscle samples from mouse (Source: [Expression Atlas](https://www.ebi.ac.uk/gxa/experiments/E-MTAB-3725/Downloads)).
 
-### {% icon hands_on %} Hands-on: All vs all analysis
-The data for this tutorial is available at [Zenodo](link!!!!!!!!!!!) to download. For convenience and reproducibility of results, we already added the GO ontology and annotations in the Zenodo repository.
+> ### {% icon hands_on %} Hands-on: All vs all analysis
+>
+> The data for this tutorial is available at [Zenodo] # (link!!!!!!!!!!!) to download. For convenience and reproducibility of results, we already added the GO ontology and annotations in the Zenodo repository.
+>
+> 1. **Upload to the Galaxy the following files**:
+> - go.obo
+> - annot.txt
+> - brain.txt
+>
+>    > ### {% icon tip %} Tip: Importing data via links
+>    >* **Click** on the upload button in the upper left of the interface.
+>    >
+>    >![image](https://user-images.githubusercontent.com/43668147/61382012-d5b42780-a8a3-11e9-8917-52116c124885.png)
+>    >
+>    > * Press **Choose local file** and search for your file.
+>    > * Press **Start** and wait for the upload to finish
+>    {: .tip}
+>
+> 2. If you press the {% icon solution %} icon of brain.txt you should see a list of overexpressed gene ids in the brain. The annot.txt file is just a tabular file associating the genes in the population set to GO terms.
+>
+> 3. GOSemanticSimilarity {% icon tool %} tool with the following parameters:
+>   - {% icon param-file %} *“Gene Ontology File”*: go.obo
+>   - {% icon param-file %} *“Gene Product Annotation File”*: annot.txt
+>   - {% icon param-select %} *"Compare"*: List of genes
+>   - {% icon param-file %} *“Study set File”*: brain.txt
+>   - {% icon param-select %} *"GO type"*: Molecular function
+>   - Use the default options for the rest. 
+>
+> #(Inserir screenshot....)
 
-1. **Upload to the Galaxy the following files**:
-- go.obo
-- annot.txt
-- brain.txt
 
-### {% icon tip %} Tip: Importing data via links
-* Click on the upload button in the upper left of the interface.
 
-![image](https://user-images.githubusercontent.com/43668147/61382012-d5b42780-a8a3-11e9-8917-52116c124885.png)
-
-* Press **Choose local file** and search for your file.
-* Press **Start** and wait for the upload to finish
-
-{: .tip}
-
-2. If you press the {% icon solution %} icon of brain.txt it should see a list of overexpressed gene ids in the brain. The annot.txt file is just a tabular file associating the genes in the population set to GO terms.
-
-3. GOSemanticSimilarity {% icon tool %} tool with the following parameters:
-   - {% icon param-file %} “Gene Ontology File”: go.obo
-   - {% icon param-file %} “Gene Product Annotation File”: annot.txt
-   - {% icon param-file %} “Study set File”: brain.txt
-   - Use the default options for the rest. 
 
 ## Interpretation of the results 
 Semantic similarity analysis, and in particular, this tool, has many applications as clustering genes according to their molecular function, biological processes in which they are involved, and the cellular component in which they perform a function.
