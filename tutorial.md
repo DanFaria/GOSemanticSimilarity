@@ -111,7 +111,7 @@ For the first example we will perform an all vs all analysis. The study sets wer
 >   - {% icon param-select %} *"GO type"*: Molecular function
 >   - Use the default options for the rest. 
 >
-> # (Inserir screenshot....)
+> ![image](https://user-images.githubusercontent.com/43668147/61537944-40926980-aa30-11e9-959b-a26273eb318d.png)
 >
 > 4. Press **Execute**
 >
