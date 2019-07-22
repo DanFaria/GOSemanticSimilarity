@@ -1,6 +1,6 @@
 # GOSemanticSimilarity
 
-GOSemanticSimilarity is a tool for performing semantic similarity analysis, based on Gene Ontology annotations, of a set of gene products or two sets of gene products.
+GOSemanticSimilarity is a tool for performing semantic similarity analysis of sets of gene products, based on Gene Ontology annotations.
 
 #### It requires as input:
 
