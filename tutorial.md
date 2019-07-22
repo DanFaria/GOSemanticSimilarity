@@ -189,7 +189,7 @@ To further discuss the similarity between the tissues, the *set vs set* mode is 
 >    > <details>
 >    >
 >    > <summary>Click to view answers</summary>
->    > The functional similarity between the muscle and the heart is the biggest, followed by the similarity between the heart and the brain. The muscle and brain are hardly similar.
+>    > The functional similarity between the muscle and the heart is the biggest, followed by the similarity between the muscle and the brain. The heart and the brain are hardly similar.
 >    > </details>
 >    {: .question}
 {: .hands_on}
