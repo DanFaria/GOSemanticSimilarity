@@ -54,6 +54,8 @@ The options are:
 
 "-res, --result FILE_PATH" => Path to the output similarity result file [Optional] (Default: "results.txt")
 
+"-hm, --heatmap FILE_PATH" => Path to the output similarity result graph file [Optional] (Default: "heatmap.png")
+
 "-gsm, --gene_metric" => Metric used to analyse semantic similarity between genes or gene products [Mandatory]
 
 "-tsm, --term_metric" => Metric used to analyse semantic similarity between ontology terms [Mandatory when using Best Match Average gene metric only]
